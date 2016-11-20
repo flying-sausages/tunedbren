@@ -5,13 +5,13 @@ filetypes="mp3 flac"
 
 sanitize() {
 	# Sanitizes file name components.
-  # This will probably need to be extended to deal with exotic fuckery
-  echo -n "$1" | sed -e 's| / |, |g' -e 's|/|,|g' -e 's|&|\\&|g' | tr -d '<>:"|?*\\'
+	# This will probably need to be extended to deal with exotic fuckery
+	echo -n "$1" | sed -e 's| / |, |g' -e 's|/|,|g' | tr -d '<>:"|?*\\'
 }
 
 flactag() {
 	# flactag TAG FILE returns the content of that tag in a FLAC file
-	metaflac --export-tags-to=- "$2" | egrep -i "${1}=" | cut -d '=' -f 2- | awk 'BEGIN {OUT=""} {if(NR==1)(OUT=$0) else {OUT=" & "$0} END {print OUT;}'
+	metaflac --export-tags-to=- "$2" | egrep -i "^${1}=" | cut -d '=' -f 2- | awk 'BEGIN {OUT=""} {if(NR==1){OUT=$0;} else {OUT=OUT" & "$0;}} END {print OUT;}'
 }
 
 check_dependencies() {
