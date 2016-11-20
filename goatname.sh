@@ -2,9 +2,15 @@
 
 name=$(basename $0)
 filetypes="mp3 flac"
+
+flactag() {
+	# flactag TAG FILE returns the content of that tag in a FLAC file
+	metaflac --export-tags-to=- "$2" | egrep -i "${1}=" | cut -d '=' -f 2- | awk 'BEGIN {OUT=""} {if(NR==1)(OUT=$0) else {OUT=" & "$0} END {print OUT;}'
+}
+
 check_dependencies() {
 	# Little sanity check for executables that we need...
-	DEPENDENCIES="id3convert mp3info metaflac"
+	DEPENDENCIES="id3convert mp3info metaflac egrep cut awk sed"
 	for dep in $DEPENDENCIES
 	do
 		[ -z $(which $dep) ] && {
@@ -13,6 +19,7 @@ check_dependencies() {
 		}
 	done
 }
+check_dependencies
 
 usage() {
 	echo "$name [-option1 -option2 ... ] /path/to/files/"
@@ -33,6 +40,7 @@ CATALOG=''
 YEAR=''
 BITRATE=''
 SOURCE=''
+OUT_DIR=''
 
 # Gather command line arguments by shifting them off one by one
 while [ $# -gt 0 ]
@@ -54,7 +62,7 @@ do
 			;;
 		-b) shift; BITRATE="$1";
 			;;
-		-src) shift; SOURCE="$1";
+		-src) shift; SOURCE="${1}^^";
 			;;
 		*) IN_DIR="$1";
 			;;
@@ -79,39 +87,43 @@ for filetype in filetypes
 do
 	ls "$IN_DIR"/*."$filetype" | while read infile
 	do
+		# Grab info from meta tags
 		case filetype in
-			mp3) 
+			mp3)
+				[ -z "$FILE_ARTIST" ] && { FILE_ARTIST=$(mp3info -a "$infile"); }
+				[ -z "$DIR_ARTIST" ] && { DIR_ARTIST="$FILE_ARTIST"; }
+				[ -z "$ALBUM" ] && { ALBUM=$(mp3info -l "$infile"); }
+				[ -z "$YEAR" ] && { YEAR=$(mp3info -y "$infile"); }
+				[ -z "$BITRATE" ] && { BITRATE=$(mp3info -bitrate "$infile"); }
 				;;
 			flac)
+				[ -z "$FILE_ARTIST" ] && { FILE_ARTIST=$(flactag ARTIST "$infile"); }
+				[ -z "$DIR_ARTIST" ] && { DIR_ARTIST=$(flactag ALBUMARTIST "$infile"); }
+				[ -z "$ALBUM" ] && { ALBUM=$(flactag ALBUM "$infile"); }
+				[ -z "$YEAR" ] && { YEAR=$(flactag DATE "$infile"); }
+				[ -z "$CATALOG" ] && { CATALOG=$(flactag CATALOGNUMBER "$infile"); }
+				[ -z "$BITRATE" ] && { BITRATE="FLAC"; }
 				;;
 			*) echo "${name}: Unimplemented filetype $filetype"
 				;;
 		esac
+
+		# Generate an output directory name, if there is none yet
+		[ -z "$OUT_DIR" ] && {
+			[ -z "$DIR_ARTIST" ] && { echo "Empty directory artist. Please set it using the -a parameter."; exit -4; }
+			[ -z "$ALBUM" ] && { echo "Empty Album field. Please set it using the -l parameter."; exit -4; }
+			[ -z "$CATALOG" ] && { echo "Empty Catalogue Number field. Please set it using the -c parameter."; exit -4; }
+			[ -z "$YEAR" ] && { echo "Empty Year field. Please set it using the -y parameter."; exit -4; }
+			[ -z "$BITRATE" ] && { echo "Empty Bitrate field. Please set it using the -b parameter."; exit -4; }
+			[ -z "$SOURCE" ] && { echo "Empty Source field. Please set it using the -src parameter."; exit -4; }
+
+			# TODO eval directory template
+		}
+
+		# TODO eval file template
 	done
 done
 
-
-#echo "Wanna check and possibly edit the tags before we move all this shit? [N/y]"
-# If yes, read out song nr, track, artist, album and year into stdout
-# Ask if correct
-    # if not, ask for track numbers to edit or leave blank to edit the entire thing
-            #maybe wipe all tags? Ask which ones should remain?
-            #Ask which fields áre the same for all files
-            #Apply all common tags
-            #Have user fill out the remaining tags one by one
-
-
-#Rename to specified standards
-
-#Get whatever info you can from the files
-artist=$(mp3info -a *.mp3)
-album=$(mp3info -l *.mp3)
-year=$(mp3info -y *.mp3)
-bitrate=$(mp3info -bitrate *.mp3)
-
-#Ask for things you can't export from the tags
-echo "Write CAT# plox"
-read catnr
 
 echo "Now give me source (WEB/Vinyl/CD/etc.)"
 read source

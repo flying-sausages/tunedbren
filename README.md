@@ -29,7 +29,7 @@ OPTIONS
 >    Set the Year field.
 >
 >  -b 'bitrate':
->    Set the Bitrate field.
+>    Set the Bitrate field. (you MUST set this with VBR MP3s, e.g. V0)
 >
 >  -src 'source':
 >    Set the Source field.
