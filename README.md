@@ -5,7 +5,7 @@ This script requires properly tagged files. As a rule of thumb, the following ta
 
 You can specify any missing fields (and/or override the tags) using the options below.
 
-OPTIONS:
+OPTIONS
 
 >  -t 'file-template':
 >    Rename files according to this template. The appropriate suffix is automatically attached to the rendered template. The default is '0%n. %a - %s'
@@ -35,6 +35,7 @@ OPTIONS:
 >    Set the Source field.
 
 TEMPLATES
+
   Templates are a string containing an arbitrary number of special sequences such as %this.
   The supported sequences are:
 
