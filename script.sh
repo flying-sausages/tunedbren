@@ -1,17 +1,80 @@
-if [[ $# -eq 0 ]] ; then
-    echo 'You gotta give me some directory to work with, mate.\n Use me like so: \"db9names /home/you/folder.with.mp3s/\"'
-    exit 0
-fi
+#!/bin/bash
+
+name=$(basename $0)
+filetypes="mp3 flac"
+check_dependencies() {
+	# Little sanity check for executables that we need...
+	DEPENDENCIES="id3convert mp3info metaflac"
+	for dep in $DEPENDENCIES
+	do
+		[ -z $(which $dep) ] && {
+			echo "Missing dependency: ${dep}" 1>&2
+			exit -99
+		}
+	done
+}
+
+usage() {
+	echo "$name [-option1 -option2 ... ] /path/to/files/"
+	cat << EOF
+Renames mp3 and flac files and directories according to DB9 standards.
+
+This script requires properly tagged files. As a rule of thumb, the following tags should always be considered required:
+	artist, title, track number.
+
+You can specify any missing fields (and/or override the tags) using the options below.
+
+OPTIONS:
+	-t 'file-template'
+		Rename files according to this template. The appropriate suffix is automatically attached to the rendered template. The default is '0%n. %a - %s'
+	-d 'dir-template'
+		Set the output directory template. The default is '%a - %l (%src %b) [%c %y]'
+	-a 'artist'
+		Set the Artist field that will be used for dir-template.
+	-ta 'artist'
+		Set the Artist field that will be used for file-template.
+	-c 'cataloguenumber'
+		Set the Catalogue Number field.
+	-y 'year'
+		Set the Year field.
+	-b 'bitrate'
+		Set the Bitrate field.
+	-src 'source'
+		Set the Source field.
+
+TEMPLATES
+	Templates are a string containing an arbitrary number of special sequences such as %this.
+	The supported sequences are:
+
+		%a - Artist
+		%l - Album
+		%s - Song
+		%n - Track Number
+		%c - Catalogue Number
+		%y - Year
+		%b - Bitrate
+		%src - Source
+		
+EOF
+	exit -1
+}
+
+[[ $# -lt 1 ]] && usage
 
 dir=$1
+
+
+id3convert "$dir"/*.mp3 || {
+	echo " failed"
+}
 
 #Should ask what standard to use for renaming
     #Or make one quickly on the fly, and allow to save it and reuse
 
 # make sure to convert all the tags first
-id3converet "$dir"/.mp3
+id3convert "$dir"/.mp3
 
-echo "Wanna check and possibly edit the tags before we move all this shit? [N/y]"
+#echo "Wanna check and possibly edit the tags before we move all this shit? [N/y]"
 # If yes, read out song nr, track, artist, album and year into stdout
 # Ask if correct
     # if not, ask for track numbers to edit or leave blank to edit the entire thing
@@ -22,7 +85,6 @@ echo "Wanna check and possibly edit the tags before we move all this shit? [N/y]
 
 
 #Rename to specified standards
-id3ren -template='%n. %a - %s.mp3' "$dir"/*.mp3
 
 #Get whatever info you can from the files
 artist=$(mp3info -a *.mp3)
@@ -44,5 +106,5 @@ sourceCaps=${source^^}}
 
 newdir="${dir}../${artist} - ${album} (${source} ${bitrate}) [${catnr} $year]]"
 
-echo "Moving to new dir = ${newdir}
+echo "Moving to new dir = ${newdir}"
 mv "$dir" "${newdir}"
