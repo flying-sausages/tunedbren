@@ -41,7 +41,7 @@ TEMPLATES
 
     %a - Artist
     %l - Album
-    %s - Song
+    %s - Song Title
     %n - Track Number
     %c - Catalogue Number
     %y - Year
