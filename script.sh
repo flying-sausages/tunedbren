@@ -5,28 +5,32 @@ fi
 
 dir=$1
 
+#Should ask what standard to use for renaming
+    #Or make one quickly on the fly, and allow to save it and reuse
+
+# make sure to convert all the tags first
+id3converet "$dir"/.mp3
 
 echo "Wanna check and possibly edit the tags before we move all this shit? [N/y]"
+# If yes, read out song nr, track, artist, album and year into stdout
+# Ask if correct
+    # if not, ask for track numbers to edit or leave blank to edit the entire thing
+            #maybe wipe all tags? Ask which ones should remain?
+            #Ask which fields áre the same for all files
+            #Apply all common tags
+            #Have user fill out the remaining tags one by one
 
-# Read out the tags from all files
-
-# Ask if it looks good
-
-# Specify track numbers to edit the tags for
-# If not track tags then just edit all of them
 
 #Rename to DB9 standards
 id3ren -template='%n. %a - %s.mp3' "$dir"/*.mp3
 
 #Get whatever info you can from the files
-
 artist=$(mp3info -a *.mp3)
 album=$(mp3info -l *.mp3)
 year=$(mp3info -y *.mp3)
 bitrate=$(mp3info -bitrate *.mp3)
 
 #Ask for things you can't export from the tags
-
 echo "Write CAT# plox"
 read catnr
 
