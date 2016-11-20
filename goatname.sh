@@ -37,7 +37,7 @@ usage() {
 
 
 IN_DIR=''
-DIR_TEMPLATE='%a - %l (%src %b) [%c %y]'
+DIR_TEMPLATE='%a - %l [%c] [%y] [%src] [%b]'
 DIR_ARTIST=''
 FILE_TEMPLATE='%n. %a - %s'
 FILE_ARTIST=''

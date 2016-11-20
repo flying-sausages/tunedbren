@@ -11,7 +11,7 @@ OPTIONS
 >    Rename files according to this template. The appropriate suffix is automatically attached to the rendered template. The default is '0%n. %a - %s'
 
 >  -d 'dir-template':
->    Set the output directory template. The default is '%a - %l (%src %b) [%c %y]'
+>    Set the output directory template. The default is '%a - %l [%c] [%y] [%src] [%b]'
 >
 >  -a 'artist':
 >    Set the Artist field that will be used for dir-template.
