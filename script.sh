@@ -21,7 +21,7 @@ echo "Wanna check and possibly edit the tags before we move all this shit? [N/y]
             #Have user fill out the remaining tags one by one
 
 
-#Rename to DB9 standards
+#Rename to specified standards
 id3ren -template='%n. %a - %s.mp3' "$dir"/*.mp3
 
 #Get whatever info you can from the files
