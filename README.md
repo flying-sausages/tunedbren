@@ -6,24 +6,33 @@ This script requires properly tagged files. As a rule of thumb, the following ta
 You can specify any missing fields (and/or override the tags) using the options below.
 
 OPTIONS:
-  -t 'file-template'
-    Rename files according to this template. The appropriate suffix is automatically attached to the rendered template. The default is '0%n. %a - %s'
-  -d 'dir-template'
-    Set the output directory template. The default is '%a - %l (%src %b) [%c %y]'
-  -a 'artist'
-    Set the Artist field that will be used for dir-template.
-  -ta 'artist'
-    Set the Artist field that will be used for file-template.
-  -l 'album'
-    Set the Album field.
-  -c 'cataloguenumber'
-    Set the Catalogue Number field.
-  -y 'year'
-    Set the Year field.
-  -b 'bitrate'
-    Set the Bitrate field.
-  -src 'source'
-    Set the Source field.
+
+>  -t 'file-template':
+>    Rename files according to this template. The appropriate suffix is automatically attached to the rendered template. The default is '0%n. %a - %s'
+
+>  -d 'dir-template':
+>    Set the output directory template. The default is '%a - %l (%src %b) [%c %y]'
+>
+>  -a 'artist':
+>    Set the Artist field that will be used for dir-template.
+>
+>  -ta 'artist':
+>    Set the Artist field that will be used for file-template.
+>
+>  -l 'album':
+>    Set the Album field.
+>
+>  -c 'cataloguenumber':
+>    Set the Catalogue Number field.
+>
+>  -y 'year':
+>    Set the Year field.
+>
+>  -b 'bitrate':
+>    Set the Bitrate field.
+>
+>  -src 'source':
+>    Set the Source field.
 
 TEMPLATES
   Templates are a string containing an arbitrary number of special sequences such as %this.
