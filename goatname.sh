@@ -145,7 +145,7 @@ do
 			OUT_DIR=$(echo -n "$DIR_TEMPLATE" | sed -e "s/%a/${DIR_ARTIST}/g" -e "s/%l/${ALBUM}/g" -e "s/%c/${CATALOG}/g" -e "s/%y/${YEAR}/g" -e "s/%b/${BITRATE}/g" -e "s/%src/${SOURCE}/g" -e 's|%.|\&|g')
 			OUT_DIR_PARENT=$(dirname "$IN_DIR")
 			OUT_DIR="${OUT_DIR_PARENT}/${OUT_DIR}"
-			mv "$IN_DIR" "$OUT_DIR"
+			mv -v "$IN_DIR" "$OUT_DIR"
 
 			# Also, see if there's an image to be renamed
 			[ -f "${OUT_DIR}/cover.jpg" -o -f "${OUT_DIR}/cover.png" ] || {
@@ -173,7 +173,7 @@ do
 		OUT_FILE=$(echo -n "$FILE_TEMPLATE" | sed -e "s/%a/${FILE_ARTIST}/g" -e "s/%l/${ALBUM}/g" -e "s/%c/${CATALOG}/g" -e "s/%y/${YEAR}/g" -e "s/%b/${BITRATE}/g  " -e "s/%s/${TITLE}/g" -e "s/%src/${SOURCE}/g" -e "s/%n/${TRACKNUMBER}/g" -e 's|%.|\&|g')
 		OUT_FILE="${OUT_FILE}.${filetype}"
 		IN_FILE_BASE=$(basename "$IN_FILE")
-		[ "${OUT_DIR}/${IN_FILE_BASE}" != "${OUT_DIR}/${OUT_FILE}" ] && mv "${OUT_DIR}/${IN_FILE_BASE}" "${OUT_DIR}/${OUT_FILE}"
+		[ "${OUT_DIR}/${IN_FILE_BASE}" != "${OUT_DIR}/${OUT_FILE}" ] && mv -v "${OUT_DIR}/${IN_FILE_BASE}" "${OUT_DIR}/${OUT_FILE}"
 	done
 done
 

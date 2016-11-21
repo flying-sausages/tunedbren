@@ -1,4 +1,4 @@
-Renames mp3 and flac files and directories according to DB9 standards.
+Renames mp3 and flac files and directories according to their tags.
 
 This script requires properly tagged files. As a rule of thumb, the following tags should always be considered required:
   artist, title, track number.
