@@ -89,6 +89,7 @@ done
 	}
 }
 
+FILE_ARTIST_PARAM="$FILE_ARTIST" # Saving this one because we'll have to restore it for Various Artists releases
 for filetype in $filetypes
 do
 	ls "$IN_DIR"/*."$filetype" 2>/dev/null | while read IN_FILE
@@ -97,6 +98,7 @@ do
 			# If we have already moved the directory, adjust the input file name accordingly
 			IN_FILE_BASE=$(basename "$IN_FILE")
 			IN_FILE="${OUT_DIR}/${IN_FILE_BASE}"
+			FiLE_ARTIST="$FILE_ARTIST_PARAM"
 		}
 
 		# Grab info from meta tags
