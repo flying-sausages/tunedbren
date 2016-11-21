@@ -8,7 +8,7 @@ You can specify any missing fields (and/or override the tags) using the options 
 OPTIONS
 
 >  -t 'file-template':
->    Rename files according to this template. The appropriate suffix is automatically attached to the rendered template. The default is '0%n. %a - %s'
+>    Rename files according to this template. The appropriate suffix is automatically attached to the rendered template. The default is '%n. %a - %s'
 
 >  -d 'dir-template':
 >    Set the output directory template. The default is '%a - %l [%c] [%y] [%src] [%b]'
