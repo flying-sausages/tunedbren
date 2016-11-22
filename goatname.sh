@@ -11,7 +11,7 @@ sanitize() {
 
 flactag() {
 	# flactag TAG FILE returns the content of that tag in a FLAC file
-	metaflac --export-tags-to=- "$2" | egrep -i "^${1}=" | cut -d '=' -f 2- | awk 'BEGIN {OUT=""} {if(NR==1){OUT=$0;} else {OUT=OUT" & "$0;}} END {print OUT;}'
+	metaflac "--show-tag=${1}" "$2" | cut -d '=' -f 2- | awk 'BEGIN {OUT=""} {if(NR==1){OUT=$0;} else {OUT=OUT" & "$0;}} END {print OUT;}'
 }
 
 check_dependencies() {
