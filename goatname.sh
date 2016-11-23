@@ -29,7 +29,8 @@ check_dependencies
 
 usage() {
 	echo "$name [-option1 -option2 ... ] /path/to/files/"
-	cat README.md 
+	here=$(dirname "${BASH_SOURCE[0]}")
+	cat "${here}/README.md"
 }
 
 # If there are no args...show usage
