@@ -3,6 +3,9 @@ Renames mp3 and flac files and directories according to their tags.
 This script requires properly tagged files. As a rule of thumb, the following tags should always be considered required:
   artist, title, track number.
 
+This script relies on the following dependencies, please make sure you've got them installed
+> id3convert (id3lib-tools) mp3info metaflac egrep cut awk sed
+
 You can specify any missing fields (and/or override the tags) using the options below.
 
 OPTIONS
